@@ -3,6 +3,5 @@ platform :ios, ‘9.2’
 pod 'BlueCatsSDK', :git => 'https://github.com/bluecats/bluecats-ios-sdk.git'
 
 target 'SampleBeaconCheckIn' do
-
+#this is test comment
 end
-
