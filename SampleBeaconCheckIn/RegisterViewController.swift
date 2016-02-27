@@ -17,6 +17,8 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
 
     @IBOutlet weak var userRepeatPassTextField: UITextField!
     
+    var  succesfullyRegistered = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,6 +37,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
     
     
     @IBAction func signUp() {
+        
         
         let userEmail = userEmailTextField.text
         let userPassword = userPasswordTextField.text
@@ -62,6 +65,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         saveUser(userEmail!,password: userPassword!);
         
         //display message
+        
         let myAlert = UIAlertController(title: "Alert", message: "Registration Successfull!", preferredStyle: UIAlertControllerStyle.Alert)
         let okAction = UIAlertAction(title: "OK'", style: UIAlertActionStyle.Default){action in
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -69,6 +73,8 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         
         myAlert.addAction(okAction)
         self.presentViewController(myAlert, animated: true, completion: nil)
+        
+        
     }
     
     
@@ -89,17 +95,21 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
     
     func saveUser(email:String, password:String)
     {
+        //splitting the string
+         let stringCompArray = email.componentsSeparatedByString("@")
+         let studentID = stringCompArray[0]
+        
         
         //lets use our web service to save the device UUID to the server
         //start request
-        let url:NSURL = NSURL(string: "http://192.168.1.7/insert.php")!
+        let url:NSURL = NSURL(string: "http://ait.interactivehippo.com.au/advancedstudio2/mobileapp/ios/register.php")!
         
         let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
         
         
         //device ID can be acquired by called UIDevice.currentDevice().identifierForVendor!.UUIDString
         let deviceID = UIDevice.currentDevice().identifierForVendor!.UUIDString
-         let bodyData = "userEmail="+email+"&"+"userPassword="+password+"&"+"deviceUID="+deviceID
+         let bodyData = "userEmail="+email+"&"+"userPassword="+password+"&"+"deviceUID="+deviceID+"&"+"studentNo="+studentID
         
         
         request.HTTPMethod = "POST"
@@ -110,6 +120,42 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
             {
                 
                 data, response, error in
+                
+                
+                if(data!.length > 0 && error == nil ){
+                    do
+                    {
+                        if let jsonResult  = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as? NSDictionary
+                        {
+                            print("successfully parsed")
+                            let result = jsonResult.objectForKey("success") as? Int64
+                            if(result == 1)
+                            {
+                                print("new registration")
+                               // self.succesfullyRegistered = true  this is delaying when response comes back
+                            }
+                            else
+                            {
+                                print("already registered")
+                            }
+                            
+                        }
+                        else {
+                            let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                            print("Error could not parse JSON: \(jsonStr)")
+                            
+                        }
+                        
+                        
+                    }
+                    catch let parseError
+                    {
+                        print(parseError)
+                        let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                        print("Error can't parse JSON: '\(jsonStr)'")
+                        
+                    }
+                }
                 
                 if error != nil
                 {

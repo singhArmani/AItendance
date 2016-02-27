@@ -16,6 +16,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var userPassword: UITextField!
     
+   // var successfullyLoggedIn = false
     
     
     override func viewDidLoad() {
@@ -48,7 +49,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         //lets use our web service to save the device UUID to the server
         //start request
-        let url:NSURL = NSURL(string: "http://192.168.1.7/selectuser.php")!
+        let url:NSURL = NSURL(string: "http://ait.interactivehippo.com.au/advancedstudio2/mobileapp/ios/login.php")!
         
         let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
         
@@ -60,6 +61,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         request.HTTPMethod = "POST"
         
+   
         
         request.HTTPBody = bodyData.dataUsingEncoding(NSUTF8StringEncoding);
         let dataTask = NSURLSession.sharedSession().dataTaskWithRequest(request)
@@ -74,7 +76,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     return
                 }
                 guard error == nil else {
-                    print("error calling GET on /posts/1")
+                    print("error calling")
                     print(error)
                     return
                 }
@@ -88,15 +90,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         if let jsonResult  = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as? NSDictionary
                         {
                             print("successfully parsed")
-                            let result = jsonResult.objectForKey("email") as? String
-                            if(result != "notRegistered")
+                            let result = jsonResult.objectForKey("username") as? String
+                            if(result == Email)
                             {
                                 //login successfull and storing the boolean value true
                                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isUserLoggedIn")
                                NSUserDefaults.standardUserDefaults().setObject(result, forKey: "loggedInUserEmail")
                                 NSUserDefaults.standardUserDefaults().synchronize()
-                                
-                                self.dismissViewControllerAnimated(true, completion: nil)
+                                                               self.dismissViewControllerAnimated(true, completion: nil)
                             }
                             else
                             {
@@ -110,14 +111,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                             
                         }
 
-                        
-//                      let result = jsonResult.objectForKey("email") as! String
-//                      if(result != "no result")
-//                      {
-//                         print("success")
-//                      }
+
                     }
-                    catch let parseError {
+                    catch let parseError
+                    {
                         print(parseError)
                         let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
                         print("Error can't parse JSON: '\(jsonStr)'")
@@ -128,17 +125,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 if error != nil
                 {
                     print("error = \(error)")
+                    
                     return
                 }
+                
                 
                 
         }
         
         dataTask.resume()
 
-        
-        
-        
         
     }
     

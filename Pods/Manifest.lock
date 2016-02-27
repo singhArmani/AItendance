@@ -1,0 +1,19 @@
+PODS:
+  - BlueCatsSDK (0.6.7)
+
+DEPENDENCIES:
+  - BlueCatsSDK (from `https://github.com/bluecats/bluecats-ios-sdk.git`)
+
+EXTERNAL SOURCES:
+  BlueCatsSDK:
+    :git: https://github.com/bluecats/bluecats-ios-sdk.git
+
+CHECKOUT OPTIONS:
+  BlueCatsSDK:
+    :commit: ce91217326f26401fe83f6ddec5d6524bdf9aa24
+    :git: https://github.com/bluecats/bluecats-ios-sdk.git
+
+SPEC CHECKSUMS:
+  BlueCatsSDK: 5a28317c4cc6189dcaf26b0bac304b01e420edc8
+
+COCOAPODS: 0.39.0

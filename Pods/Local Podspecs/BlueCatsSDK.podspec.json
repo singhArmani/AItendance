@@ -1,0 +1,36 @@
+{
+  "name": "BlueCatsSDK",
+  "version": "0.6.7",
+  "license": {
+    "type": "Commercial",
+    "text": "              All text and design is copyright © 2013-2015 BlueCats Australia Pty Ltd.\n\n              All rights reserved.\n\n              https://bluecats.com/tos/\n"
+  },
+  "summary": "BlueCatsSDK for micro-location.",
+  "homepage": "http://www.bluecats.com",
+  "authors": {
+    "BlueCats": "theteam@bluecats.com"
+  },
+  "source": {
+    "git": "https://github.com/bluecats/bluecats-ios-sdk.git",
+    "tag": "0.6.7"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source_files": "Headers/*.h",
+  "preserve_paths": "libBlueCatsSDK.a",
+  "libraries": "BlueCatsSDK",
+  "requires_arc": true,
+  "frameworks": [
+    "SystemConfiguration",
+    "CoreBluetooth",
+    "MobileCoreServices",
+    "CoreGraphics",
+    "CoreLocation",
+    "AdSupport",
+    "CoreData"
+  ],
+  "xcconfig": {
+    "LIBRARY_SEARCH_PATHS": "\"$(PODS_ROOT)/BlueCatsSDK/\""
+  }
+}
